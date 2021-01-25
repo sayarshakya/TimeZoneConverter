@@ -55,17 +55,17 @@ namespace Sayar.TimeZoneConverter.Controllers
             int timeZoneHours = getTimeZoneDetail.BaseUtcOffset.Hours;
             var getLimitedTimeZone = TimeZoneInfo.GetSystemTimeZones().Where(x => x.BaseUtcOffset.Hours <= -4 && x.BaseUtcOffset.Hours >= -9).ToList();
             bool check = getLimitedTimeZone.Any(x => x.BaseUtcOffset.Hours == timeZoneHours);
-            if (role != null || ( role == Enums.Roles.User.ToString() && check))
+            if (role != null)
             {
-                return $"You don't have access to convert {getTimeZoneDetail.DisplayName.ToString()} Timezone.";
+                if(role == Enums.Roles.User.ToString() && check)
+                {
+                   return $"You don't have access to convert {getTimeZoneDetail.DisplayName.ToString()} Timezone.";
+                }
             }
-            else
-            {
-                DateTime dateToConvert = Convert.ToDateTime(model.MyDate).Add(TimeSpan.Parse(model.Time));
-                DateTime convertedDate = TimeZoneInfo.ConvertTime(dateToConvert, TimeZoneInfo.FindSystemTimeZoneById(model.ConvertTo));
-                return $"Time and date in {getTimeZoneDetail.DisplayName.ToString()} is {string.Format("{0:G}", convertedDate)}";
-            }
-               
+            
+            DateTime dateToConvert = Convert.ToDateTime(model.MyDate).Add(TimeSpan.Parse(model.Time));
+            DateTime convertedDate = TimeZoneInfo.ConvertTime(dateToConvert, TimeZoneInfo.FindSystemTimeZoneById(model.ConvertTo));
+            return $"Time and date in {getTimeZoneDetail.DisplayName.ToString()} is {string.Format("{0:G}", convertedDate)}";
         }
     }
 }
