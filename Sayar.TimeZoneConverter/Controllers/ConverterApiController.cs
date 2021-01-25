@@ -40,7 +40,7 @@ namespace Sayar.TimeZoneConverter.Controllers
 
         [HttpPost]
         [Route("ConvertRequest")]
-        public string ConvertRequest([FromBody] ConversionViewModel model)
+        public IActionResult ConvertRequest([FromBody] ConversionViewModel model)
         {
            
             var getTimeZoneDetail = TimeZoneInfo.FindSystemTimeZoneById(model.ConvertTo);
@@ -59,13 +59,13 @@ namespace Sayar.TimeZoneConverter.Controllers
             {
                 if(role == Enums.Roles.User.ToString() && check)
                 {
-                   return $"You don't have access to convert {getTimeZoneDetail.DisplayName.ToString()} Timezone.";
+                   return Ok($"You don't have access to convert {getTimeZoneDetail.DisplayName.ToString()} Timezone.");
                 }
             }
             
             DateTime dateToConvert = Convert.ToDateTime(model.MyDate).Add(TimeSpan.Parse(model.Time));
             DateTime convertedDate = TimeZoneInfo.ConvertTime(dateToConvert, TimeZoneInfo.FindSystemTimeZoneById(model.ConvertTo));
-            return $"Time and date in {getTimeZoneDetail.DisplayName.ToString()} is {string.Format("{0:G}", convertedDate)}";
+            return Ok($"Time and date in {getTimeZoneDetail.DisplayName.ToString()} is {string.Format("{0:G}", convertedDate)}");
         }
     }
 }
