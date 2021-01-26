@@ -9,6 +9,7 @@ namespace Sayar.TimeZoneConverter.Models
 {
     public class ConversionViewModel
     {
+        [Required]
         public string Time { get; set; }
         [Required]
         public string MyDate { get; set; }

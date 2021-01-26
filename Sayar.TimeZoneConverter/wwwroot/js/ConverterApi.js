@@ -1,5 +1,5 @@
 ﻿
-$('#MyDate').datepicker();
+$("#MyDate").datepicker();
 $(document).ready(function () {
     $('.error').hide();
     $.ajax({
@@ -13,19 +13,18 @@ $(document).ready(function () {
                 timeZoneList += '<option value="' + data[i].value + '">' + data[i].text + '</option>';
             }
             $("#TimeZoneList").html(timeZoneList);
-
-        }, //End of AJAX Success function
-
+        }, 
         failure: function (data) {
             alert(data.responseText);
-        }, //End of AJAX failure function
+        },
         error: function (data) {
-            alert(data.responseText);
-        } //End of AJAX error function
-
+            var obj = jQuery.parseJSON(data.responseText);
+            $("#DisplayException").removeAttr('style');
+            $("#ErrorZone").html("Error Code : " + obj.StatusCode + " <br/>Message : "+ obj.Message);
+        } 
     });
 
-    $('#frm1').submit(function (e) {
+    $("#MyForm").submit(function (e) {
         e.preventDefault();
         var isOK = ValidateForm();
         if (isOK) {
@@ -39,12 +38,17 @@ $(document).ready(function () {
                 type: "POST",
                 contentType: "application/json; charset=utf-8",
                 data: JSON.stringify(model),
-                success: function (result, status, xhr) {
+                success: function (data) {
                     $("#AddCss").removeAttr('style');
-                    $("#resultTimeZone").html(result);
+                    $("#ResultTimeZone").html(data);
                 },
-                error: function (xhr, status, error) {
-                    console.log(xhr);
+                failure: function (data) {
+                    alert(data.responseText);
+                },
+                error: function (data) {
+                    var obj = jQuery.parseJSON(data.responseText);
+                    $("#DisplayException").removeAttr('style');
+                    $("#ErrorZone").html("Error Code : " + obj.StatusCode + " <br/>Message : " + obj.Message);
                 }
             });
         }
@@ -61,6 +65,12 @@ function ValidateForm() {
         $('#MyDate').focus();
         $('#MyDate').siblings('.error').show();
         $('#MyDate').parents('.form-group').addClass('has-error');
+        isAllValid = false;
+    }
+    if ($('#Time').val().trim() === "") {
+        $('#Time').focus();
+        $('#Time').siblings('.error').show();
+        $('#Time').parents('.form-group').addClass('has-error');
         isAllValid = false;
     }
     return isAllValid;
