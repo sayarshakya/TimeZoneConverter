@@ -46,9 +46,10 @@ namespace Sayar.TimeZoneConverter
             {
                 app.UseExceptionHandler("/Home/Error");
                 app.UseHsts();
-                
+                app.UseApiExceptionHandler(logger);
+
             }
-            app.UseApiExceptionHandler(logger);
+           
             app.UseHttpsRedirection();
             app.UseStaticFiles();
 

@@ -14,9 +14,6 @@ $(document).ready(function () {
             }
             $("#TimeZoneList").html(timeZoneList);
         }, 
-        failure: function (data) {
-            alert(data.responseText);
-        },
         error: function (data) {
             var obj = jQuery.parseJSON(data.responseText);
             $("#DisplayException").removeAttr('style');
@@ -41,9 +38,6 @@ $(document).ready(function () {
                 success: function (data) {
                     $("#AddCss").removeAttr('style');
                     $("#ResultTimeZone").html(data);
-                },
-                failure: function (data) {
-                    alert(data.responseText);
                 },
                 error: function (data) {
                     var obj = jQuery.parseJSON(data.responseText);

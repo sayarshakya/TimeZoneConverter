@@ -53,10 +53,6 @@ namespace Sayar.TimeZoneConverter.Controllers
         [Route("ConvertRequest")]
         public IActionResult ConvertRequest([FromBody] ConversionViewModel model)
         {
-            //if(!ModelState.IsValid)
-            //{
-            //    return Ok("Validation Failed");
-            //}
 
             try
             {
